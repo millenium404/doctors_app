@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% if not request.user.is_authenticated %}
+<br/><br/>
+<div class="container" align="center">
+  <div class="row justify-content-md-center">
+    <div class="col-md-auto" style="margin-bottom:30px;">
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      {% if error %}
+      <br/>
+      <p style="color: red">{{ error }}</p>
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      <img src="/static/img/doctors/login-img.jpg" class="rounded img-fluid">
+    </div>
+  </div>
+  {% else %}
+  <br/>
+  <h5>Вече сте влезнали в системата. Може да излезете <a href="{% url 'logout-view' %}">от тук</a>.</h5>
+  {% endif %}
+</div>
+<br/>
+{% endblock content %}

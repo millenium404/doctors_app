@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% if not request.user.is_authenticated %}
+<br/><br/><br/>
+<div class="container">
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ user_form|crispy }}
+    {{ profile_form|crispy }}
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+  <br/>
+  <p>Вече имате създаден акаунт? <a href="{% url 'login-view' %}">Вход в системата</a>.</p>
+  {% if error %}
+  <br/>
+  <p style="color: red">{{ error }}</p>
+  {% endif %}
+  {% else %}
+  <br/>
+  <p><b>{{ user.username }}</b>, Вие сте регистиран потребител и вече сте влезнали в системата. Искате ли да излзезете от профила си? <a href="/logout/">Изход</a>?</p>
+  {% endif %}
+</div>
+{% endblock content %}
