@@ -17,9 +17,6 @@
 
     <div class="collapse navbar-collapse" id="navbarSupport">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="about.html">About Us</a>
         </li>
@@ -33,6 +30,14 @@
           <a class="nav-link" href="contact.html">Contact</a>
         </li>
         {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'update-view' id=user.id %}">Моят Профил</a>
+        </li>
+          {% if user.profile.is_doctor %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doctor-edit-view' id=user.id %}">Моята Практика</a>
+          </li>
+          {% endif %}
         <li class="nav-item">
           <a class="btn btn-danger ml-lg-3" href="{% url 'logout-view' %}">Изход</a>
         </li>

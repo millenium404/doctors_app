@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from PIL import Image
 
 # Create your models here.
@@ -19,7 +21,7 @@ class Doctor(models.Model):
     active = models.BooleanField(default=False)
     image = models.ImageField(default='default.jpg', upload_to='')
 
-    def save(self):
+    def save(self, **kwargs):
         super().save()
         im = Image.open(self.image.path)
         min_size = 256
@@ -31,3 +33,13 @@ class Doctor(models.Model):
             output_size = (200, 200)
             new_im.thumbnail(output_size)
             new_im.save(self.image.path)
+
+
+@receiver(post_save, sender=User)
+def create_doctor(sender, instance, created, **kwargs):
+    if created:
+        Doctor.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_doctor(sender, instance, **kwargs):
+    instance.doctor.save()
