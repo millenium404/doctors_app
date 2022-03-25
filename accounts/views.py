@@ -29,10 +29,11 @@ def login_view(request):
         user = form.get_user()
         login(request, user)
         return redirect('home-view')
+        messages.warning(request, 'Грешно потребителско име или парола!')
     else:
         form = AuthenticationForm(request)
         context = {'form': form}
-    return render(request, 'accounts/login.html', context)
+        return render(request, 'accounts/login.html', context)
 
 
 @login_required
@@ -56,5 +57,5 @@ def profile_update_view(request, id=None):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('/account/login/')
+        return redirect('login-view')
     return render(request, 'accounts/logout.html', {})

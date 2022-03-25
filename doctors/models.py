@@ -17,7 +17,7 @@ class Doctor(models.Model):
     nzok = models.BooleanField(default=False)
     children = models.BooleanField(default=False)
     price = models.FloatField(blank=True, null=True)
-    map_url = models.CharField(max_length=100, blank=True, null=True)
+    map_url = models.CharField(max_length=250, blank=True, null=True)
     active = models.BooleanField(default=False)
     image = models.ImageField(default='default.jpg', upload_to='')
 

@@ -13,6 +13,9 @@ def doctor_edit_view(request, id=None):
     if form.is_valid():
         try:
             form.save()
+            obj = Doctor.objects.get(user_id=id)
+            obj.map_url = f"https://www.google.com/maps?q={obj.city}+{obj.address}&output=embed"
+            obj.save()
             messages.success(request, f'Лекарската практика е обновена успешно.')
         except:
             messages.warning(request, f'Възникна грешка. Моля, опитайте отново.')
