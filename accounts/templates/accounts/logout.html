@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container">
 {% if request.user.is_authenticated %}
 <br/><br/>
 <form action="" method="POST">
   {% csrf_token %}
-  <p>Are you sure you want to logout?</p>
-  <button type="submit">Yes, logout.</button>
+  <p>Сигурни ли сте че искате да излезете?</p>
+  <button type="submit" class="btn btn-danger">Да, изход.</button>
 </form>
 <br/>
 {% if error %}
@@ -16,4 +17,5 @@
 <br/>
 <p>You are not logged in. Would you like to <a href="{% url 'login-view' %}">Login</a>?</p>
 {% endif %}
+</div>
 {% endblock content %}

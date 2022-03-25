@@ -8,7 +8,7 @@
     {% csrf_token %}
     {{ user_form|crispy }}
     {{ profile_form|crispy }}
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">Регистрация</button>
   </form>
   <br/>
   <p>Вече имате създаден акаунт? <a href="{% url 'login-view' %}">Вход в системата</a>.</p>
@@ -18,7 +18,7 @@
   {% endif %}
   {% else %}
   <br/>
-  <p><b>{{ user.username }}</b>, Вие сте регистиран потребител и вече сте влезнали в системата. Искате ли да излзезете от профила си? <a href="/logout/">Изход</a>?</p>
+  <p><b>{{ user.username }}</b>, Вие сте регистиран потребител и вече сте влезнали в системата. Искате ли да излзезете от профила си? <a href="{% url 'logout-view' %}">Изход</a>?</p>
   {% endif %}
 </div>
 {% endblock content %}

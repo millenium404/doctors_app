@@ -6,19 +6,18 @@
 
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <meta name="copyright" content="MACode ID, https://macodeid.com/">
 
   <title>Health Center</title>
 
-  <link rel="stylesheet" href="/static//css/maicons.css">
+  <link rel="stylesheet" href="/static/css/maicons.css">
 
-  <link rel="stylesheet" href="/static//css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
 
-  <link rel="stylesheet" href="/static//vendor/owl-carousel/css/owl.carousel.css">
+  <link rel="stylesheet" href="/static/vendor/owl-carousel/css/owl.carousel.css">
 
-  <link rel="stylesheet" href="/static//vendor/animate/animate.css">
+  <link rel="stylesheet" href="/static/vendor/animate/animate.css">
 
-  <link rel="stylesheet" href="/static//css/theme.css">
+  <link rel="stylesheet" href="/static/css/theme.css">
 </head>
 <body>
 
@@ -49,7 +48,13 @@
     </div> <!-- .topbar -->
 
     {% include 'navbar.html' %}
-
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
   </header>
 
   {% block content %}
@@ -99,15 +104,15 @@
       <p id="copyright">Copyright &copy; 2022 <a href="https://milenski.eu" target="_blank">Milenski</a>. All right reserved</p>
   </footer>
 
-<script src="/static//js/jquery-3.5.1.min.js"></script>
+<script src="/static/js/jquery-3.5.1.min.js"></script>
 
-<script src="/static//js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
 
-<script src="/static//vendor/owl-carousel/js/owl.carousel.min.js"></script>
+<script src="/static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
 
-<script src="/static//vendor/wow/wow.min.js"></script>
+<script src="/static/vendor/wow/wow.min.js"></script>
 
-<script src="/static//js/theme.js"></script>
+<script src="/static/js/theme.js"></script>
 
 </body>
 </html>
