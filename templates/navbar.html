@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
-  <div class="container">
+  <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'home-view' %}"><span class="text-primary">Health</span>-Center</a>
 
     <form action="#">
@@ -21,7 +21,7 @@
           <a class="nav-link" href="about.html">About Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="doctors.html">Doctors</a>
+          <a class="nav-link" href="{% url 'doctor-list-view' %}">Doctors</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="blog.html">News</a>

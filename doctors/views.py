@@ -24,3 +24,9 @@ def doctor_edit_view(request, id=None):
         return render(request, 'doctors/edit-doctor.html', context)
     else:
         raise Http404
+
+
+def doctor_list_view(request):
+    obj = Doctor.objects.all()
+    context = {'object': obj}
+    return render (request, 'doctors/list-view.html', context)

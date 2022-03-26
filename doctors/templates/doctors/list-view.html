@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<style>
+  .map-responsive{
+    overflow:hidden;
+    padding-bottom:100%;
+    position:relative;
+    height:0;
+  }
+  .map-responsive iframe{
+      left:0;
+      top:0;
+      height:100%;
+      width:100%;
+      position:absolute;
+}
+</style>
+<br/>
+<h4>Doctor List View</h4>
+<br/>
+{% for doctor in object %}
+<div class="container-xxl shadow p-3 mb-5 bg-light rounded">
+  <br/>
+<div class="page-section py-3 mt-md-n5 custom-index">
+  <div class="row justify-content-center">
+    <div class="col-md-4 py-3 py-md-0" align="center">
+      <img src="/static/images/{{ doctor.image }}" alt="{{ doctor.practice_name }}" class="rounded img-fluid">
+    </div>
+    <div class="col-md-4 py-3 py-md-0" align="center">
+      <ul class="list-group">
+      <li class="list-group-item list-group-item"><b>{{ doctor.practice_name }}</b></li>
+      <li class="list-group-item list-group-item-secondary"><b>Специалност: {{ doctor.department }}</b></li>
+      <li class="list-group-item list-group-item">Град: {{ doctor.city }}</li>
+      <li class="list-group-item list-group-item-secondary">Адрес: {{ doctor.address }}</li>
+      <li class="list-group-item list-group-item">Телефон: {{ doctor.phone_number }}</li>
+      {% if doctor.nzok %}
+      <li class="list-group-item list-group-item-success">Работи с НЗОК</li>
+      {% else %}
+      <li class="list-group-item list-group-item-danger">Не работи с НЗОК</li>
+      {% endif %}
+      {% if doctor.children %}
+      <li class="list-group-item list-group-item-success">Работи с деца</li>
+      {% else %}
+      <li class="list-group-item list-group-item-danger">Не работи с деца</li>
+      {% endif %}
+      <li class="list-group-item list-group-item-secondary">Цена за преглед: {{ doctor.price }} лв.</li>
+      </ul>
+    </div>
+    <div class="col-md-4 py-3 py-md-0" align="center">
+      <div class="map-responsive">
+        <iframe src="{{ doctor.map_url }}" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock content %}

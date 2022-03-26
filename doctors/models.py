@@ -23,16 +23,17 @@ class Doctor(models.Model):
 
     def save(self, **kwargs):
         super().save()
-        im = Image.open(self.image.path)
-        min_size = 256
-        x, y = im.size
-        size = max(min_size, x, y)
-        new_im = Image.new('RGB', (size, size))
-        new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
-        if new_im.height > 200 or img.width > 200:
-            output_size = (200, 200)
-            new_im.thumbnail(output_size)
-            new_im.save(self.image.path)
+        if self.image != 'default.jpg':
+            im = Image.open(self.image.path)
+            min_size = 256
+            x, y = im.size
+            size = max(min_size, x, y)
+            new_im = Image.new('RGB', (size, size))
+            new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
+            if new_im.height > 200 or img.width > 200:
+                output_size = (200, 200)
+                new_im.thumbnail(output_size)
+                new_im.save(self.image.path)
 
 
 @receiver(post_save, sender=User)
