@@ -17,9 +17,13 @@
 }
 </style>
 <br/>
-<h4>Doctor List View</h4>
+<form class="form-inline px-4" method="get">
+  {% csrf_token %}
+  {{ filter.form|crispy }}
+  <button class="btn btn-secondary" type="submit">Търси</button>
+</form>
 <br/>
-{% for doctor in object %}
+{% for doctor in filter.qs %}
 <div class="container-xxl shadow p-3 mb-5 bg-light rounded">
   <br/>
 <div class="page-section py-3 mt-md-n5 custom-index">
@@ -56,6 +60,4 @@
   </div>
 </div>
 {% endfor %}
-</div>
-
 {% endblock content %}

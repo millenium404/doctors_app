@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import DoctorEditForm
 from .models import Doctor
+from .filters import DoctorFilter
 from django.http import Http404
 
 @login_required
@@ -28,5 +29,6 @@ def doctor_edit_view(request, id=None):
 
 def doctor_list_view(request):
     obj = Doctor.objects.all()
-    context = {'object': obj}
-    return render (request, 'doctors/list-view.html', context)
+    filter = DoctorFilter(request.GET, queryset=obj)
+    context = {'object': obj, 'filter': filter}
+    return render(request, 'doctors/list-view.html', context)

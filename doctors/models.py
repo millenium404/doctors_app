@@ -21,6 +21,9 @@ class Doctor(models.Model):
     active = models.BooleanField(default=False)
     image = models.ImageField(default='default.jpg', upload_to='')
 
+    def __str__(self):
+        return f'{self.id} - {self.practice_name}'
+
     def save(self, **kwargs):
         super().save()
         if self.image != 'default.jpg':
