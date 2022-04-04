@@ -11,6 +11,10 @@ class DoctorQuerySet(models.QuerySet):
         if query is None or query == '':
             return self.none()
         query = query.title()
+        print(f"""
+        Последно търсене за:
+                    *** {query} ***
+                    """)
         lookups = Q(practice_name__icontains=query) | Q(department__icontains=query) | Q(city__icontains=query)
         return self.filter(lookups)
 
