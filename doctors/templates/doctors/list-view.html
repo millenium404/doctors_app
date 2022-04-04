@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 <style>
   .map-responsive{
     overflow:hidden;
@@ -17,14 +17,35 @@
 }
 </style>
 <br/>
-<form class="form-inline px-4" method="get">
+<div class="container-fluid" align='center'>
+  <form class="form-inline px-4" method="get">
+    {% csrf_token %}
+    <div class="form-group mb-2 px-2">
+      <!-- <h6 class="mb-2 px-2">Град: </h6> -->
+    {{ filter.form.city|add_class:"form-control" }}
+    </div>
+    <div class="form-group mb-2 px-2">
+      <!-- <h6 class="mb-2 px-2">Специалност: </h6> -->
+    {{ filter.form.department|add_class:"form-control" }}
+    </div>
+    <button class="btn btn-secondary btn-sm mb-2" type="submit">Филтър</button>
+</div>
+<!-- <form class="form-inline px-4" method="get">
   {% csrf_token %}
-  {{ filter.form|crispy }}
-  <button class="btn btn-secondary" type="submit">Търси</button>
-</form>
+  <div class="form-group mb-2 px-2">
+    <h6 class="mb-2 px-2">Град: </h6>
+  {{ filter.form.city|add_class:"form-control" }}
+  </div>
+  <div class="form-group mb-2 px-2">
+    <h6 class="mb-2 px-2">Специалност: </h6>
+  {{ filter.form.department|add_class:"form-control" }}
+  </div>
+  <button class="btn btn-secondary btn-sm mb-2" type="submit">Филтър</button>
+</form> -->
+</div>
 <br/>
 {% for doctor in filter.qs %}
-<div class="container-xxl shadow p-3 mb-5 bg-light rounded">
+<div class="container-lg shadow p-3 mb-5 bg-light rounded">
   <br/>
 <div class="page-section py-3 mt-md-n5 custom-index">
   <div class="row justify-content-center">
@@ -33,22 +54,22 @@
     </div>
     <div class="col-md-4 py-3 py-md-0" align="center">
       <ul class="list-group">
-      <li class="list-group-item list-group-item"><b>{{ doctor.practice_name }}</b></li>
-      <li class="list-group-item list-group-item-secondary"><b>Специалност: {{ doctor.department }}</b></li>
-      <li class="list-group-item list-group-item">Град: {{ doctor.city }}</li>
-      <li class="list-group-item list-group-item-secondary">Адрес: {{ doctor.address }}</li>
-      <li class="list-group-item list-group-item">Телефон: {{ doctor.phone_number }}</li>
+      <li class="list-group-item list-group-item py-2"><h5><b>{{ doctor.practice_name }}</b></h5></li>
+      <li class="list-group-item list-group-item-secondary py-2"><b>Специалност: {{ doctor.department }}</b></li>
+      <li class="list-group-item list-group-item py-2">Град: {{ doctor.city }}</li>
+      <li class="list-group-item list-group-item-secondary py-2">Адрес: {{ doctor.address }}</li>
+      <li class="list-group-item list-group-item py-2">Телефон: {{ doctor.phone_number }}</li>
       {% if doctor.nzok %}
-      <li class="list-group-item list-group-item-success">Работи с НЗОК</li>
+      <li class="list-group-item list-group-item-success py-2">Работи с НЗОК</li>
       {% else %}
-      <li class="list-group-item list-group-item-danger">Не работи с НЗОК</li>
+      <li class="list-group-item list-group-item-danger py-2">Не работи с НЗОК</li>
       {% endif %}
       {% if doctor.children %}
-      <li class="list-group-item list-group-item-success">Работи с деца</li>
+      <li class="list-group-item list-group-item-success py-2">Работи с деца</li>
       {% else %}
-      <li class="list-group-item list-group-item-danger">Не работи с деца</li>
+      <li class="list-group-item list-group-item-danger py-2">Не работи с деца</li>
       {% endif %}
-      <li class="list-group-item list-group-item-secondary">Цена за преглед: {{ doctor.price }} лв.</li>
+      <li class="list-group-item list-group-item-secondary py-2">Цена за преглед: {{ doctor.price }} лв.</li>
       </ul>
     </div>
     <div class="col-md-4 py-3 py-md-0" align="center">

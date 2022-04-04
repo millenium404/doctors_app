@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'appointments',
     'crispy_forms',
     'django_filters',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
