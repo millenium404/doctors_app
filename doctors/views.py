@@ -5,14 +5,21 @@ from .forms import DoctorEditForm
 from .models import Doctor
 from .filters import DoctorFilter
 from django.http import Http404
+from datetime import datetime
 
+
+def datetime_view(request):
+    time = datetime.now()
+    formated_time = time.strftime("Имате записан час за %H:%M на %x")
+    context = {'time': formated_time}
+    return render(request, 'doctors/datetime.html', context)
 
 def doctor_search_view(request):
     query_dict = request.GET # This is a dictionary
     query = query_dict.get('q') # <input type="text" name="q">
     qs = Doctor.objects.search(query=query)
     context = {'doctors': qs}
-    return render (request, 'doctors/search.html', context)
+    return render(request, 'doctors/search.html', context)
 
 @login_required
 def doctor_edit_view(request, id=None):
