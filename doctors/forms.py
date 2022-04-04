@@ -10,7 +10,7 @@ class DoctorEditForm(forms.ModelForm):
     class Meta:
         model = Doctor
         fields = '__all__'
-        exclude = ['active', 'map_url']
+        exclude = ['user', 'active', 'map_url']
         labels = {
             'hospital': 'Болнично заведение',
             'practice_name': 'Име на лекар / лекарска практика',

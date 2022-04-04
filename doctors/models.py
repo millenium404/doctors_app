@@ -1,10 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
 
-# Create your models here.
+
+class DoctorQuerySet(models.QuerySet):
+    def search(self, query=None):
+        if query is None or query == '':
+            return self.none()
+        query = query.title()
+        lookups = Q(practice_name__icontains=query) | Q(department__icontains=query) | Q(city__icontains=query)
+        return self.filter(lookups)
+
+
+class ArticleManager(models.Manager):
+    def get_queryset(self):
+        return DoctorQuerySet(self.model, using=self.db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query=query)
+
+
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     hospital = models.CharField(max_length=100, blank=True, null=True)
@@ -20,6 +38,8 @@ class Doctor(models.Model):
     map_url = models.CharField(max_length=250, blank=True, null=True)
     active = models.BooleanField(default=False)
     image = models.ImageField(default='default.jpg', upload_to='')
+
+    objects = ArticleManager()
 
     def __str__(self):
         return f'{self.id} - {self.practice_name}'

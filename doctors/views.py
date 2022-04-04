@@ -6,6 +6,14 @@ from .models import Doctor
 from .filters import DoctorFilter
 from django.http import Http404
 
+
+def doctor_search_view(request):
+    query_dict = request.GET # This is a dictionary
+    query = query_dict.get('q') # <input type="text" name="q">
+    qs = Doctor.objects.search(query=query)
+    context = {'doctors': qs}
+    return render (request, 'doctors/search.html', context)
+
 @login_required
 def doctor_edit_view(request, id=None):
     obj = get_object_or_404(Doctor, user_id=id)
@@ -32,3 +40,9 @@ def doctor_list_view(request):
     filter = DoctorFilter(request.GET, queryset=obj)
     context = {'object': obj, 'filter': filter}
     return render(request, 'doctors/list-view.html', context)
+
+def doctor_detail_view(request, id=None):
+    obj = get_object_or_404(Doctor, id=id)
+    range = [1, 2, 3, 4, 5, 6, 7, 8]
+    context = {'doctor': obj, 'range': range}
+    return render(request, 'doctors/detail-view.html', context)

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+<style>
+  .map-responsive{
+    overflow:hidden;
+    padding-bottom:100%;
+    position:relative;
+    height:0;
+  }
+  .map-responsive iframe{
+      left:0;
+      top:0;
+      height:100%;
+      width:100%;
+      position:absolute;
+}
+</style>
+<br/>
+<div class="container-lg shadow p-3 mb-5 bg-light rounded">
+  <br/>
+  <div class="page-section py-3 mt-md-n5 custom-index">
+    <div class="row justify-content-center">
+      <div class="col-md-4 py-3 py-md-0" align="center">
+        <img src="/static/images/{{ doctor.image }}" alt="{{ doctor.practice_name }}" class="rounded img-fluid">
+      </div>
+      <div class="col-md-4 py-3 py-md-0" align="center">
+        <ul class="list-group">
+        <li class="list-group-item list-group-item py-2"><h5><b>{{ doctor.practice_name }}</b></h5></li>
+        <li class="list-group-item list-group-item-secondary py-2"><b>Специалност: {{ doctor.department }}</b></li>
+        <li class="list-group-item list-group-item py-2">Град: {{ doctor.city }}</li>
+        <li class="list-group-item list-group-item-secondary py-2">Адрес: {{ doctor.address }}</li>
+        <li class="list-group-item list-group-item py-2">Телефон: {{ doctor.phone_number }}</li>
+        {% if doctor.nzok %}
+        <li class="list-group-item list-group-item-success py-2">Работи с НЗОК</li>
+        {% else %}
+        <li class="list-group-item list-group-item-danger py-2">Не работи с НЗОК</li>
+        {% endif %}
+        {% if doctor.children %}
+        <li class="list-group-item list-group-item-success py-2">Работи с деца</li>
+        {% else %}
+        <li class="list-group-item list-group-item-danger py-2">Не работи с деца</li>
+        {% endif %}
+        <li class="list-group-item list-group-item-secondary py-2">Цена за преглед: {{ doctor.price|floatformat:2 }} лв.</li>
+        </ul>
+      </div>
+      <div class="col-md-4 py-3 py-md-0" align="center">
+        <div class="map-responsive">
+          <iframe src="{{ doctor.map_url }}" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="row pt-4">
+      <div class="col-md-6 py-3 py-md-0" align="left">
+        <span style="white-space: pre-line">{{ doctor.about }}</span>
+      </div>
+      <div class="col-md-6 py-3 py-md-0 border-bottom" align="center">
+        <p>Запази час</p>
+        <div class="row pt-1 border-top">
+          <div class="col-sm">
+            <p>За дата - 1</p>
+          </div>
+          <div class="col-sm">
+            <p>За дата - 2</p>
+          </div>
+          <div class="col-sm">
+            <p>За дата - 3</p>
+          </div>
+        </div>
+        {% for n in range %}
+        <div class="row pt-1 bg-white">
+          <div class="col-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
+          </div>
+          <div class="col-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
+          </div>
+          <div class="col-sm">
+            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
