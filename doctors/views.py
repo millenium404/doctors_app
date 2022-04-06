@@ -7,7 +7,7 @@ from .filters import DoctorFilter
 from django.http import Http404
 from datetime import datetime, timedelta
 from appointments.models import Appointment
-from .utils import hours_list, week_list, date_time_object
+from .utils import hours_list, week_list, date_time_object, populate_appointments
 
 
 def datetime_view(request): # Test view. To be removed!
@@ -29,15 +29,7 @@ def schedule_view(request, id=None):
                 print(value)
         return redirect('schedule-view', id=request.user.id)
     if request.user.id == id and request.user.profile.is_doctor:
-        for n in range(2): #Its still broken, to be fixed!
-            for hour in hours_list:
-                time = datetime.now()
-                date = time + timedelta(days=n)
-                appointment = Appointment.objects.create(doctor_id=id)
-                appointment.user_id = 0
-                appointment.status = 'not_available'
-                appointment.hour = f"{date.date()} {hour}:00"
-                appointment.save()
+        populate_appointments(id)
         hours = hours_list
         dates = week_list()
         context = {'doctor': doctor, 'appointments': appointments, 'hours': hours, 'dates': dates}

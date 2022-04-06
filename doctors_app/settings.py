@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'bg'
 
-TIME_ZONE = 'Europe/Sofia'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

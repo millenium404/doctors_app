@@ -29,6 +29,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'doctor-edit-view' id=user.id %}">Моята Практика</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'schedule-view' id=user.id %}">Моят График</a>
+          </li>
           {% endif %}
         <li class="nav-item">
           <a class="btn btn-danger ml-lg-3" href="{% url 'logout-view' %}">Изход</a>
