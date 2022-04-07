@@ -8,11 +8,11 @@
   <form class="form-inline" action="" method="GET">
     {% if week != 0 %}
     <div class="col-sm pt-3">
-      <button class="btn btn-outline-info btn-sm" type="submit" name="button" value='-1'>Предишна седмица</button>
+      <button class="btn btn-outline-info btn-sm" type="submit" name="week" value='-1'>Предишна седмица</button>
     </div>
     {% endif %}
     <div class="col-sm pt-3">
-      <button class="btn btn-outline-info btn-sm" type="submit" name="button" value='1'>Следваща седмица</button>
+      <button class="btn btn-outline-info btn-sm" type="submit" name="week" value='1'>Следваща седмица</button>
     </div>
   </form>
 </div>
@@ -21,7 +21,7 @@
     {% csrf_token %}
   <div class="row">
     {% for date, hours in hours.items %}
-    <div class="col-sm pt-3" align="left">
+    <div class="col-sm pt-3" align="center">
       <p><b>Дата: {{ date }}</b></p>
       {% for hour in hours %}
         <div class="form-check">

@@ -24,7 +24,7 @@ def schedule_view(request, id=None):
         if request.method == 'GET':
             query = request.GET
             if query:
-                week += int(query['button'])
+                week += int(query['week'])
                 if week < 0:
                     week = 0
             hours = appointments_dict(id, week)
