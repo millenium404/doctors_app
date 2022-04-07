@@ -5,25 +5,15 @@ from appointments.models import Appointment
 
 hours_list = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30']
 
-def week_days():
-    today = datetime.now()
-    days_list = []
-    for n in range(7):
-        day = today + timedelta(days=1)
-        day = day.strftime('%A')
-        days_list.append(day)
-    return days_list
-
-
 def week_range():
     today = datetime.now() - timedelta(hours=13)
     week_ahead = today + timedelta(days=7)
     range = [today.date(), week_ahead.date()]
     return range
 
-
-def appointments_dict(id):
-    today = datetime.now() - timedelta(hours=13)
+def appointments_dict(id, week):
+    today = datetime.now() - timedelta(hours=3)
+    today += timedelta(weeks=int(week))
     week_ahead = today + timedelta(days=7)
     appointments = Appointment.objects.filter(doctor_id=id, hour__range=[today.date(), week_ahead.date()])
     dictionary = {}
@@ -73,7 +63,10 @@ def date_time_object(string):
 
 def populate_appointments(id):
     appointments = Appointment.objects.filter(doctor_id=id)
-    start_time = datetime.now()
+    time_now = datetime.now() - timedelta(days=7)
+    time_before = time_now - timedelta(days=7)
+    old_appointments = Appointment.objects.filter(doctor_id=id, hour__range=[time_before, time_now])
+    old_appointments.delete()
     if len(appointments) < 2640:
         for n in range(120): #Its still broken, to be fixed!
             for hour in hours_list:
@@ -91,3 +84,19 @@ def populate_appointments(id):
                     appointment.status = 'not_available'
                     appointment.hour = f"{date.date()} {hour}:00"
                     appointment.save()
+
+def save_appointment_hours(post_request, id, week):
+    query = post_request
+    today = datetime.now() - timedelta(hours=13)
+    today += timedelta(weeks=int(week))
+    week_ahead = today + timedelta(days=7)
+    app_object = Appointment.objects.filter(doctor_id=id, hour__range=[today.date(), week_ahead.date()])
+    for app in app_object:
+        app.status = 'not_available'
+        app.save()
+    for key, value in query.items():
+        if key not in ['csrfmiddlewaretoken', 'button']:
+            hour = date_time_object(value)
+            app_object = Appointment.objects.filter(doctor_id=id, hour=hour).first()
+            app_object.status = 'available'
+            app_object.save()

@@ -2,25 +2,40 @@
 {% block content %}
 {% load widget_tweaks %}
 <br/>
-<p>schedule page {{doctor.practice_name}}</p>
-
+<h5><b>Седмичен график: <p class="text-secondary">{{doctor.practice_name}}</p></b></h5>
+<p class="text-secondary">Отбележете часовете в семицата, в които можете да приемате пациенти. За маркираните в червено часове има записани пациенти.</p>
+<div class="row">
+  <form class="form-inline" action="" method="GET">
+    {% if week != 0 %}
+    <div class="col-sm pt-3">
+      <button class="btn btn-outline-info btn-sm" type="submit" name="button" value='-1'>Предишна седмица</button>
+    </div>
+    {% endif %}
+    <div class="col-sm pt-3">
+      <button class="btn btn-outline-info btn-sm" type="submit" name="button" value='1'>Следваща седмица</button>
+    </div>
+  </form>
+</div>
 <div class="container-lg">
   <form method="POST">
     {% csrf_token %}
   <div class="row">
-    {% for date in dates %}
+    {% for date, hours in hours.items %}
     <div class="col-sm pt-3" align="left">
-      <p>{{ date }}</p>
+      <p><b>Дата: {{ date }}</b></p>
       {% for hour in hours %}
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="{{ date }}-{{ hour }}" value="{{ date }}-{{ hour }}" name="key {{ date }}-{{ hour }}">
-          <label class="form-check-label" for="inlineCheckbox1">{{ hour }}</label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="{{ date }}-{{ hour }}" value="{{ date }}-{{ hour }}" name="key {{ date }}-{{ hour }}" {% if hour.1 == 'available'%}checked{% endif %}>
+          <label class="form-check-label {% if hour.1 == 'available'%}text-secondary{% endif %} {% if hour.2 != 0 %}text-danger{% endif %}" for="inlineCheckbox1">{{ hour.0 }}</label>
         </div>
       {% endfor %}
     </div>
     {% endfor %}
-    <button type="submit" name="button">POST</button>
+    <div class="pt-3">
+    <button class="btn btn-secondary" type="submit" name="button">Запиши</button>
+    </div>
   </div>
   </form>
 </div>
+<br/>
 {% endblock content %}

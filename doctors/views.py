@@ -7,32 +7,28 @@ from .filters import DoctorFilter
 from django.http import Http404
 from datetime import datetime, timedelta
 from appointments.models import Appointment
-from .utils import hours_list, week_list, date_time_object, populate_appointments
+from .utils import populate_appointments, appointments_dict, save_appointment_hours
 
-
-def datetime_view(request): # Test view. To be removed!
-    appointment = Appointment.objects.first()
-    time = appointment.hour
-    formated_time = time.strftime("Имате записан час за %H:%M на %x")
-    context = {'time': formated_time}
-    return render(request, 'doctors/datetime.html', context)
+week = 0
 
 def schedule_view(request, id=None):
+    global week
     doctor = get_object_or_404(Doctor, user_id=id)
     appointments = Appointment.objects.filter(doctor_id=id)
     if request.method == 'POST':
-        query = request.POST
-        # print(query)
-        for key, value in query.items():
-            if key not in ['csrfmiddlewaretoken', 'button']:
-                value = date_time_object(value)
-                print(value)
+        save_appointment_hours(request.POST, id, week)
         return redirect('schedule-view', id=request.user.id)
     if request.user.id == id and request.user.profile.is_doctor:
         populate_appointments(id)
-        hours = hours_list
-        dates = week_list()
-        context = {'doctor': doctor, 'appointments': appointments, 'hours': hours, 'dates': dates}
+        hours = appointments_dict(id, week)
+        if request.method == 'GET':
+            query = request.GET
+            if query:
+                week += int(query['button'])
+                if week < 0:
+                    week = 0
+            hours = appointments_dict(id, week)
+        context = {'doctor': doctor, 'hours': hours, 'week': week}
         return render(request, 'doctors/schedule.html', context)
     else:
         raise Http404
