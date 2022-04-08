@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load widget_tweaks %}
+
 <style>
   .map-responsive{
     overflow:hidden;
@@ -54,32 +55,7 @@
       <div class="col-md-6 py-3 py-md-0" align="left">
         <span style="white-space: pre-line">{{ doctor.about }}</span>
       </div>
-      <div class="col-md-6 py-3 py-md-0 border-bottom" align="center">
-        <p>Запази час</p>
-        <div class="row pt-1 border-top">
-          <div class="col-sm">
-            <p>За дата - 1</p>
-          </div>
-          <div class="col-sm">
-            <p>За дата - 2</p>
-          </div>
-          <div class="col-sm">
-            <p>За дата - 3</p>
-          </div>
-        </div>
-        {% for n in range %}
-        <div class="row pt-1 bg-white">
-          <div class="col-sm">
-            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
-          </div>
-          <div class="col-sm">
-            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
-          </div>
-          <div class="col-sm">
-            <button type="button" class="btn btn-outline-primary btn-sm">11:30</button>
-          </div>
-        </div>
-        {% endfor %}
+      <div class="col-md-6 py-3 py-md-0 border-bottom" align="center" hx-get="{% url 'calendar-view' doctor.id %}" hx-trigger="revealed" id="replace-content">
       </div>
     </div>
   </div>

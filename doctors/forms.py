@@ -23,3 +23,7 @@ class DoctorEditForm(forms.ModelForm):
             'price': 'Цена за преглед',
             'image': 'Снимка',
         }
+
+
+class DateForm(forms.Form):
+    date = forms.DateTimeField(input_formats=['%d/%m/%Y'])

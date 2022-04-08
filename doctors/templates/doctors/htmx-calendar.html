@@ -1,0 +1,27 @@
+<p>Запази час при {{ doctor.practice_name }}</p>
+<div class="row pt-1 border-top">
+  <div class="pt-3">
+    <p>Свободни часове за <b>{{ date|date:"j. F" }}</b></p>
+  </div>
+</div>
+<div class="row pt-1">
+  <div class="col-md">
+    {% if hours %}
+    {% for hour in hours %}
+    <button type="button" class="btn btn-outline-primary btn-sm"><b>{{ hour.hour|date:"H:i" }}</b></button>
+    {% endfor %}
+    {% else %}
+    <h5 class="text-danger"><b>Няма свободни часове за тази дата.</b></h5>
+    {% endif %}
+  </div>
+</div>
+<div class="row pt-3">
+    {% if days != 0 %}
+    <div class="col-sm pt-3">
+      <button hx-trigger="click" hx-get="{% url 'calendar-view' doctor.id %}?date=-1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-outline-info btn-sm">Предишен ден</button>
+    </div>
+    {% endif %}
+    <div class="col-sm pt-3">
+      <button hx-trigger="click" hx-get="{% url 'calendar-view' doctor.id %}?date=1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-outline-info btn-sm">Следващ ден</button>
+    </div>
+</div>
