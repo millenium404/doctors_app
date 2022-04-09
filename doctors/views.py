@@ -15,22 +15,10 @@ days = 0
 @login_required
 def schedule_view(request, id=None):
     global week
-    doctor = get_object_or_404(Doctor, user_id=id)
-    appointments = Appointment.objects.filter(doctor_id=id)
-    if request.method == 'POST':
-        save_appointment_hours(request.POST, id, week)
-        return redirect('schedule-view', id=request.user.id)
     if request.user.id == id and request.user.profile.is_doctor:
-        populate_appointments(id)
-        hours = appointments_dict(id, week)
-        if request.method == 'GET':
-            query = request.GET
-            if query:
-                week += int(query['week'])
-                if week < 0:
-                    week = 0
-            hours = appointments_dict(id, week)
-        context = {'doctor': doctor, 'hours': hours, 'week': week}
+        week = 0
+        doctor = get_object_or_404(Doctor, user_id=id)
+        context = {'doctor': doctor}
         return render(request, 'doctors/schedule.html', context)
     else:
         raise Http404
@@ -61,7 +49,6 @@ def doctor_edit_view(request, id=None):
         return render(request, 'doctors/edit-doctor.html', context)
     else:
         raise Http404
-
 
 def doctor_list_view(request):
     obj = Doctor.objects.all()
@@ -96,3 +83,26 @@ def htmx_calendar_view(request, id):
     hours = Appointment.objects.filter(doctor_id=id, hour__range=[date.date(), next_date.date()], user_id=0, status='available')
     context = {'doctor': obj, 'hours': hours, 'days': days, 'date': date}
     return render(request, 'doctors/htmx-calendar.html', context)
+
+def schedule_calendar_htmx(request, id=None):
+    global week
+    doctor = get_object_or_404(Doctor, user_id=id)
+    appointments = Appointment.objects.filter(doctor_id=id)
+    if request.method == 'POST':
+        try:
+            save_appointment_hours(request.POST, id, week)
+            messages.success(request, f'Графикът е обновен успешно.')
+        except:
+            messages.warning(request, f'Възникна грешка... Моля, опреснете страницата и опитайте отново.')
+        return redirect('schedule-calendar-view', id=request.user.id)
+    populate_appointments(id)
+    hours = appointments_dict(id, week)
+    if request.method == 'GET':
+        query = request.GET
+        if query:
+            week += int(query['week'])
+            if week < 0:
+                week = 0
+        hours = appointments_dict(id, week)
+    context = {'doctor': doctor, 'hours': hours, 'week': week}
+    return render(request, 'doctors/htmx-schedule-calendar.html', context)

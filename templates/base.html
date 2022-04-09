@@ -6,7 +6,6 @@
 
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-
   <title>Health Center</title>
 
   <link rel="stylesheet" href="/static/css/maicons.css">
@@ -52,6 +51,7 @@
 
     {% include 'navbar.html' %}
     {% if messages %}
+      {% include 'hide-alert-message.html' %}
       {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">
           {{ message }}
