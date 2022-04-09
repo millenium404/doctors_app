@@ -3,7 +3,13 @@
 {% load crispy_forms_tags %}
 
 <br/><br/>
-<div class="container">
+
+<div class="pt-3">
+{% for app in appointments %}
+<p class="text-secondary">Имате записан час за {{ app.hour }} за {{ app.reason }}</p>
+{% endfor %}
+</div>
+<div class="container pt-3">
   <form action="" method="POST">
     {% csrf_token %}
     {{ profile_form|crispy }}

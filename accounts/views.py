@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm, ProfileForm
 from .models import Profile
+from appointments.models import Appointment
 from django.http import Http404
 
 
@@ -40,7 +41,8 @@ def login_view(request):
 def profile_update_view(request, id=None):
     obj = get_object_or_404(Profile, user_id=id)
     profile_form = ProfileForm(request.POST or None, instance=obj)
-    context = {'object': obj, 'profile_form': profile_form}
+    appointments = Appointment.objects.filter(user_id=id)
+    context = {'object': obj, 'profile_form': profile_form, 'appointments': appointments}
     if profile_form.is_valid():
         try:
             profile_form.save()
