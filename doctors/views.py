@@ -25,7 +25,7 @@ def get_appointment_htmx(request, id):
             appointment.save()
             context['success'] = 'Успешно запазихте избрания от Вас час.'
         else:
-            context['error'] = 'Не може да запазите повече часове при този лекар!'
+            context['error'] = '*Не може да запазите повече часове при този лекар!'
             return render(request, 'doctors/get-appointment.html', context)
     return render(request, 'doctors/get-appointment.html', context)
 

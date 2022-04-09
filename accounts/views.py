@@ -28,7 +28,7 @@ def login_view(request):
     if form.is_valid():
         user = form.get_user()
         login(request, user)
-        return redirect('home-view')
+        return redirect('doctor-list-view')
         messages.warning(request, 'Грешно потребителско име или парола!')
     else:
         form = AuthenticationForm(request)

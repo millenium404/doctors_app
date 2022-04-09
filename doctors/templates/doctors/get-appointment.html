@@ -4,9 +4,10 @@
 <div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
 	<div class="modal-dialog modal-dialog-centered">
 	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="text-secondary"><b>Запази час</b></h5>
+		<div class="modal-header bg-primary">
+		  <h5 class="text-dark"><b>Запази час</b></h5>
 		</div>
+    {% if user.is_authenticated %}
 		<div class="modal-body">
 		  <p>Избрахте да запазите час за <b>{{ appointment.hour|date:"j. F, H:i" }}</b></p>
       <div class="pt-3" align="left">
@@ -32,6 +33,15 @@
         <br/>
       </div>
 		</div>
+    {% else %}
+    <div class="pt-3">
+      <h5 class="text-secondary"><b>Трябва да влезете в системата с потребителско име и парола, за да може да запазите час при лекар.</b></h5>
+    </div>
+    <div class="modal-footer pt-3" align="right">
+      <a href="{% url 'login-view' %}"><button class="btn btn-primary">Вход</button></a>
+      <button type="button" class="btn btn-danger" onclick="closeModal()">Затвори</button>
+    </div>
+    {% endif %}
 	  </div>
 	</div>
 </div>
