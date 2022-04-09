@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;">
+</div>
+<div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="text-secondary"><b>Запази час</b></h5>
+		</div>
+		<div class="modal-body">
+		  <p>Избрахте да запазите час за <b>{{ appointment.hour|date:"j. F, H:i" }}</b></p>
+      <div class="pt-3" align="left">
+        <form hx-post="{% url 'get-appointment' id %}" hx-target="#modals-here" hx-swap="innerHTML">
+          {% csrf_token %}
+          <p>Причина за посещението:</p>
+          {{ form.reason|add_class:"form-control" }}
+          {% if error %}
+          <br/><p class="text-danger"> <b>{{ error }}</b></p>
+          {% endif %}
+          {% if success %}
+          <br/><p class="text-secondary"> <b>{{ success }}</b></p>
+          {% endif %}
+          <div class="pt-3" align="right">
+            <button class="btn btn-secondary" type="submit">Запази</button>
+            {% if success %}
+            <button type="button" class="btn btn-danger" onclick="closeModal(), window.location.reload();">Затвори</button>
+            {% else %}
+            <button type="button" class="btn btn-danger" onclick="closeModal()">Затвори</button>
+            {% endif %}
+          </div>
+        </form>
+        <br/>
+      </div>
+		</div>
+	  </div>
+	</div>
+</div>

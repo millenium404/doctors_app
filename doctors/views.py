@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import DoctorEditForm, DateForm
+from .forms import DoctorEditForm, DateForm, AppointmentForm
 from .models import Doctor
 from .filters import DoctorFilter
 from django.http import Http404
@@ -11,6 +11,23 @@ from .utils import populate_appointments, appointments_dict, save_appointment_ho
 
 week = 0
 days = 0
+
+def get_appointment_htmx(request, id):
+    appointment = Appointment.objects.get(id=id)
+    form = AppointmentForm()
+    user_appointments = Appointment.objects.filter(user_id=request.user.id, doctor_id = appointment.doctor_id)
+    context = {'appointment': appointment, 'form': form, 'id': id}
+    if request.method == 'POST':
+        if len(user_appointments) < 3:
+            query = request.POST
+            appointment.reason = query['reason']
+            appointment.user_id = request.user.id
+            appointment.save()
+            context['success'] = 'Успешно запазихте избрания от Вас час.'
+        else:
+            context['error'] = 'Не може да запазите повече часове при този лекар!'
+            return render(request, 'doctors/get-appointment.html', context)
+    return render(request, 'doctors/get-appointment.html', context)
 
 @login_required
 def schedule_view(request, id=None):
