@@ -9,14 +9,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'JaCP)(*_*SSaf1982351asdgfAF|}{:?>N<!@5234'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get('DEBUG')) == '1'
+DEBUG = False
 
-ALLOWED_HOSTS = ['doctors.milenski.eu', 'www.doctors.milenski.eu', '127.0.0.1']
-if DEBUG == False:
-    ALLOWED_HOSTS += os.environ.get('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ['doctors.milenski.eu', 'www.doctors.milenski.eu', '192.168.1.140']
 
 # Application definition
 
@@ -121,9 +119,10 @@ USE_TZ = True
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
