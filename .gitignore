@@ -63,6 +63,8 @@ db.sqlite3-journal
 settings.py
 doctors_app/settings.py
 static/
+doctors_app.ini
+uwsgi_params
 
 # Flask stuff:
 instance/
