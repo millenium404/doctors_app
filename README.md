@@ -1,4 +1,4 @@
-### Dctor Appointments App
-#### Django, htmx, bootstrap
+## Dctor Appointments App
+### Django, htmx, bootstrap
 
 ![screen-gif](./health-center.gif)
