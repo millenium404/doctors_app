@@ -2,15 +2,15 @@
   <form class="form-inline" method="GET">
     {% if week != 0 %}
     <div class="col-sm pt-3">
-      <button hx-trigger="click" hx-get="{% url 'schedule-calendar-view' doctor.id %}?week=-1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-outline-info btn-sm">Предишна седмица</button>
+      <button hx-trigger="click" hx-get="{% url 'schedule-calendar-view' user.id %}?week=-1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-outline-info btn-sm">Предишна седмица</button>
     </div>
     {% endif %}
     <div class="col-sm pt-3">
-      <button hx-trigger="click" hx-get="{% url 'schedule-calendar-view' doctor.id %}?week=1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-info btn-sm">Следваща седмица</button>
+      <button hx-trigger="click" hx-get="{% url 'schedule-calendar-view' user.id %}?week=1" hx-target="#replace-content" hx-swap="innerHTML" class="btn btn-info btn-sm">Следваща седмица</button>
     </div>
   </form>
 </div>
-  <form hx-post="{% url 'schedule-calendar-view' doctor.id %}" hx-target="#replace-content" hx-swap="innerHTML">
+  <form hx-post="{% url 'schedule-calendar-view' user.id %}" hx-target="#replace-content" hx-swap="innerHTML">
     {% csrf_token %}
   <div class="row">
     {% for date, hours in hours.items %}

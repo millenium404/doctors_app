@@ -3,6 +3,6 @@
 <br/>
 <h5><b>Седмичен график: <p class="text-secondary">{{doctor.practice_name}}</p></b></h5>
 <p class="text-secondary">Отбележете часовете в семицата, в които можете да приемате пациенти. За маркираните в червено часове има записани пациенти.</p>
-<div class="container-lg" align="center" hx-get="{% url 'schedule-calendar-view' doctor.id %}" hx-trigger="revealed" id="replace-content">
+<div class="container-lg" align="center" hx-get="{% url 'schedule-calendar-view' user.id %}" hx-trigger="revealed" id="replace-content">
 </div>
 {% endblock content %}
