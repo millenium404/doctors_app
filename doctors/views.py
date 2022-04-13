@@ -106,12 +106,9 @@ def schedule_calendar_htmx(request, id=None):
     doctor = get_object_or_404(Doctor, user_id=id)
     appointments = Appointment.objects.filter(doctor_id=id)
     if request.method == 'POST':
-        benchmark = datetime.now()
         try:
             save_appointment_hours(request.POST, id, week)
             messages.success(request, f'Графикът е обновен успешно.')
-            benchmark = datetime.now() - benchmark
-            print(benchmark)
         except:
             messages.warning(request, f'Възникна грешка... Моля, опреснете страницата и опитайте отново.')
         return redirect('schedule-calendar-view', id=request.user.id)
