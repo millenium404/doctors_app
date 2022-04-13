@@ -67,7 +67,7 @@ def populate_appointments(id):
     time_before = time_now - timedelta(days=7)
     old_appointments = Appointment.objects.filter(doctor_id=id, hour__range=[time_before, time_now])
     old_appointments.delete()
-    if len(appointments) < 2640:
+    if len(appointments) < 1980:
         for n in range(90):
             for hour in hours_list:
                 time = datetime.now()
