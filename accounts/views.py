@@ -55,6 +55,12 @@ def profile_update_view(request, id=None):
     else:
         raise Http404
 
+def app_delete_view(request, user_id, app_id=None):
+    if user_id == request.user.id:
+        appointment = Appointment.objects.get(id=app_id)
+        appointment.user_id = 0
+        appointment.save()
+        return redirect('update-view', id=user_id)
 
 def logout_view(request):
     if request.method == 'POST':

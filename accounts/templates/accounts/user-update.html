@@ -6,7 +6,8 @@
 
 <div class="pt-3">
 {% for app in appointments %}
-<p class="text-secondary">Имате записан час за {{ app.hour }} за {{ app.reason }}</p>
+<p class="text-secondary">Имате записан час за {{ app.hour }} за {{ app.reason }}
+<a class="text-danger" href="{% url 'app-delete' user_id=user.id app_id=app.id %}"><b>Анулирай</b></a></p>
 {% endfor %}
 </div>
 <div class="container pt-3">
