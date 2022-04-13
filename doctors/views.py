@@ -12,23 +12,6 @@ from .utils import populate_appointments, appointments_dict, save_appointment_ho
 week = 0
 days = 0
 
-def get_appointment_htmx(request, id):
-    appointment = Appointment.objects.get(id=id)
-    form = AppointmentForm()
-    user_appointments = Appointment.objects.filter(user_id=request.user.id, doctor_id = appointment.doctor_id)
-    context = {'appointment': appointment, 'form': form, 'id': id}
-    if request.method == 'POST':
-        if len(user_appointments) < 3:
-            query = request.POST
-            appointment.reason = query['reason']
-            appointment.user_id = request.user.id
-            appointment.save()
-            context['success'] = 'Успешно запазихте избрания от Вас час.'
-        else:
-            context['error'] = '*Не може да запазите повече часове при този лекар!'
-            return render(request, 'doctors/get-appointment.html', context)
-    return render(request, 'doctors/get-appointment.html', context)
-
 @login_required
 def schedule_view(request, id=None):
     global week
@@ -100,6 +83,23 @@ def htmx_calendar_view(request, id):
     hours = Appointment.objects.filter(doctor_id=id, hour__range=[date.date(), next_date.date()], user_id=0, status='available')
     context = {'doctor': obj, 'hours': hours, 'days': days, 'date': date}
     return render(request, 'doctors/htmx-calendar.html', context)
+
+def get_appointment_htmx(request, id):
+    appointment = Appointment.objects.get(id=id)
+    form = AppointmentForm()
+    user_appointments = Appointment.objects.filter(user_id=request.user.id, doctor_id = appointment.doctor_id)
+    context = {'appointment': appointment, 'form': form, 'id': id}
+    if request.method == 'POST':
+        if len(user_appointments) < 3:
+            query = request.POST
+            appointment.reason = query['reason']
+            appointment.user_id = request.user.id
+            appointment.save()
+            context['success'] = 'Успешно запазихте избрания от Вас час.'
+        else:
+            context['error'] = '*Не може да запазите повече часове при този лекар!'
+            return render(request, 'doctors/get-appointment.html', context)
+    return render(request, 'doctors/get-appointment.html', context)
 
 def schedule_calendar_htmx(request, id=None):
     global week
