@@ -68,7 +68,7 @@ def populate_appointments(id):
     old_appointments = Appointment.objects.filter(doctor_id=id, hour__range=[time_before, time_now])
     old_appointments.delete()
     if len(appointments) < 2640:
-        for n in range(120): #Its still broken, to be fixed!
+        for n in range(90):
             for hour in hours_list:
                 time = datetime.now()
                 date = time + timedelta(days=n)
@@ -79,11 +79,7 @@ def populate_appointments(id):
                 except:
                     check_hour = ''
                 if new_hour not in check_hour:
-                    appointment = Appointment.objects.create(doctor_id=id)
-                    appointment.user_id = 0
-                    appointment.status = 'not_available'
-                    appointment.hour = f"{date.date()} {hour}:00"
-                    appointment.save()
+                    appointment = Appointment.objects.create(doctor_id=id, user_id=0, status='not_available', hour=f"{date.date()} {hour}:00")
 
 def save_appointment_hours(post_request, id, week):
     query = post_request
