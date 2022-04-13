@@ -51,7 +51,7 @@ def doctor_edit_view(request, id=None):
         raise Http404
 
 def doctor_list_view(request):
-    obj = Doctor.objects.all()
+    obj = Doctor.active_doctors()
     filter = DoctorFilter(request.GET, queryset=obj)
     context = {'object': obj, 'filter': filter}
     return render(request, 'doctors/list-view.html', context)

@@ -48,6 +48,10 @@ class Doctor(models.Model):
     def __str__(self):
         return f'{self.id} - {self.practice_name}'
 
+    def active_doctors():
+        object = Doctor.objects.filter(~Q(practice_name=None))
+        return object
+
     def save(self, **kwargs):
         super().save()
         im = Image.open(self.image.path)
