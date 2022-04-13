@@ -33,7 +33,7 @@ def doctor_search_view(request):
 @login_required
 def doctor_edit_view(request, id=None):
     obj = get_object_or_404(Doctor, user_id=id)
-    form = DoctorEditForm(request.POST or None, instance=obj)
+    form = DoctorEditForm(request.POST or None, request.FILES or None, instance=obj)
     context = {'object': obj, 'form': form}
     if form.is_valid():
         try:
