@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'JaCP)(*_*SSaf1982351asdgfAF|}{:?>N<!@5234'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['doctors.milenski.eu', 'www.doctors.milenski.eu', '192.168.1.140']
+ALLOWED_HOSTS = ['doctors.milenski.eu', 'www.doctors.milenski.eu', '192.168.1.140', '127.0.0.1']
 
 # Application definition
 
@@ -118,11 +118,11 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'static')
+]
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-# STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static')
-#]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 

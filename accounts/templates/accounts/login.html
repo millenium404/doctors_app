@@ -11,6 +11,9 @@
         {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Вход</button>
       </form>
+      <div class="pt-3">
+        <h6 class="text-dark">Нямаш акаунт? <a class="text-secondary" href="{% url 'register-view' %}">Регистрирай се.</a></h6>
+      </div>
       {% if error %}
       <br/>
       <p style="color: red">{{ error }}</p>
