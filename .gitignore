@@ -65,6 +65,7 @@ doctors_app/settings.py
 static/
 doctors_app.ini
 uwsgi_params
+health-center.gif
 
 # Flask stuff:
 instance/
