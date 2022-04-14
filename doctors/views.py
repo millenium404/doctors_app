@@ -64,14 +64,11 @@ def doctor_detail_view(request, id=None):
     return render(request, 'doctors/detail-view.html', context)
 
 def htmx_calendar_view(request, id):
-    # global days
+    global days
     if request.method == 'GET':
         query = request.GET
         if query:
-            try:
-                days += int(query['date'])
-            except:
-                days = 0
+            days += int(query['date'])
             if days < 0:
                 days = 0
     obj = get_object_or_404(Doctor, id=id)
