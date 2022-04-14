@@ -10,17 +10,6 @@ from appointments.models import Appointment
 from .utils import populate_appointments, appointments_dict, save_appointment_hours
 
 
-@login_required
-def schedule_view(request, id=None):
-    if request.user.id == id and request.user.profile.is_doctor:
-        doctor = get_object_or_404(Doctor, user_id=id)
-        context = {'doctor': doctor}
-        response = render(request, 'doctors/schedule.html', context)
-        response.set_cookie('week', 0)
-        return response
-    else:
-        raise Http404
-
 def doctor_search_view(request):
     query_dict = request.GET # This is a dictionary
     query = query_dict.get('q') # <input type="text" name="q">
@@ -63,7 +52,7 @@ def doctor_detail_view(request, id=None):
 
 def htmx_calendar_view(request, id):
     days = int(request.COOKIES['days'])
-    obj = get_object_or_404(Doctor, id=id)
+    doctor = get_object_or_404(Doctor, id=id)
     apps = Appointment.objects.filter(doctor_id=id, user_id=0).order_by('hour')
     date = datetime.now()
     for app in apps:
@@ -73,7 +62,7 @@ def htmx_calendar_view(request, id):
     date = date + timedelta(days=days)
     next_date = date + timedelta(days=1)
     hours = Appointment.objects.filter(doctor_id=id, hour__range=[date.date(), next_date.date()], user_id=0, status='available')
-    context = {'doctor': obj, 'hours': hours, 'days': days, 'date': date}
+    context = {'doctor': doctor, 'hours': hours, 'days': days, 'date': date}
     response = render(request, 'doctors/htmx-calendar.html', context)
     if request.method == 'GET':
         query = request.GET
@@ -102,6 +91,17 @@ def get_appointment_htmx(request, id):
             context['error'] = '*Не може да запазите повече часове при този лекар!'
             return render(request, 'doctors/get-appointment.html', context)
     return render(request, 'doctors/get-appointment.html', context)
+
+@login_required
+def schedule_view(request, id=None):
+    if request.user.id == id and request.user.profile.is_doctor:
+        doctor = get_object_or_404(Doctor, user_id=id)
+        context = {'doctor': doctor}
+        response = render(request, 'doctors/schedule.html', context)
+        response.set_cookie('week', 0)
+        return response
+    else:
+        raise Http404
 
 def schedule_calendar_htmx(request, id=None):
     week = int(request.COOKIES['week'])
