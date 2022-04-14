@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from .env import get_hosts, get_secretkey, get_debug, get_database
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,12 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'JaCP)(*_*SSaf1982351asdgfAF|}{:?>N<!@5234'
+SECRET_KEY = get_secretkey
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_debug
 
-ALLOWED_HOSTS = ['doctors.milenski.eu', 'www.doctors.milenski.eu', '192.168.1.140', '127.0.0.1']
+ALLOWED_HOSTS = get_hosts
 
 # Application definition
 
@@ -72,16 +73,7 @@ WSGI_APPLICATION = 'doctors_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'doctors',
-	'USER': 'milenski.eu',
-	'PASSWORD': '1986Milenski#',
-	'HOST': 'localhost',
-	'PORT': '7788',
-    }
-}
+DATABASES = get_database
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
