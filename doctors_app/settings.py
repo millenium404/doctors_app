@@ -74,11 +74,16 @@ WSGI_APPLICATION = 'doctors_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'doctors',
+	'USER': 'milenski.eu',
+	'PASSWORD': '1986Milenski#',
+	'HOST': 'localhost',
+	'PORT': '7788',
     }
 }
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
