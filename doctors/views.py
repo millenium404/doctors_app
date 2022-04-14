@@ -4,22 +4,20 @@ from django.contrib.auth.decorators import login_required
 from .forms import DoctorEditForm, DateForm, AppointmentForm
 from .models import Doctor
 from .filters import DoctorFilter
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from datetime import datetime, timedelta
 from appointments.models import Appointment
 from .utils import populate_appointments, appointments_dict, save_appointment_hours
 
-week = 0
-days = 0
 
 @login_required
 def schedule_view(request, id=None):
-    global week
     if request.user.id == id and request.user.profile.is_doctor:
-        week = 0
         doctor = get_object_or_404(Doctor, user_id=id)
         context = {'doctor': doctor}
-        return render(request, 'doctors/schedule.html', context)
+        response = render(request, 'doctors/schedule.html', context)
+        response.set_cookie('week', 0)
+        return response
     else:
         raise Http404
 
@@ -57,20 +55,14 @@ def doctor_list_view(request):
     return render(request, 'doctors/list-view.html', context)
 
 def doctor_detail_view(request, id=None):
-    global days
-    days = 0
     obj = get_object_or_404(Doctor, id=id)
     context = {'doctor': obj}
-    return render(request, 'doctors/detail-view.html', context)
+    response = render(request, 'doctors/detail-view.html', context)
+    response.set_cookie('days', 0)
+    return response
 
 def htmx_calendar_view(request, id):
-    global days
-    if request.method == 'GET':
-        query = request.GET
-        if query:
-            days += int(query['date'])
-            if days < 0:
-                days = 0
+    days = int(request.COOKIES['days'])
     obj = get_object_or_404(Doctor, id=id)
     apps = Appointment.objects.filter(doctor_id=id, user_id=0).order_by('hour')
     date = datetime.now()
@@ -82,7 +74,17 @@ def htmx_calendar_view(request, id):
     next_date = date + timedelta(days=1)
     hours = Appointment.objects.filter(doctor_id=id, hour__range=[date.date(), next_date.date()], user_id=0, status='available')
     context = {'doctor': obj, 'hours': hours, 'days': days, 'date': date}
-    return render(request, 'doctors/htmx-calendar.html', context)
+    response = render(request, 'doctors/htmx-calendar.html', context)
+    if request.method == 'GET':
+        query = request.GET
+        if query:
+            response = redirect('calendar-view', id=id)
+            days += int(query['date'])
+            response.set_cookie('days', days)
+            if days < 0:
+                response.set_cookie('days', 0)
+            return response
+    return response
 
 def get_appointment_htmx(request, id):
     appointment = Appointment.objects.get(id=id)
@@ -102,7 +104,7 @@ def get_appointment_htmx(request, id):
     return render(request, 'doctors/get-appointment.html', context)
 
 def schedule_calendar_htmx(request, id=None):
-    global week
+    week = int(request.COOKIES['week'])
     doctor = get_object_or_404(Doctor, user_id=id)
     appointments = Appointment.objects.filter(doctor_id=id)
     if request.method == 'POST':
@@ -114,12 +116,15 @@ def schedule_calendar_htmx(request, id=None):
         return redirect('schedule-calendar-view', id=request.user.id)
     populate_appointments(id)
     hours = appointments_dict(id, week)
+    context = {'doctor': doctor, 'hours': hours, 'week': week}
+    response = render(request, 'doctors/htmx-schedule-calendar.html', context)
     if request.method == 'GET':
         query = request.GET
         if query:
+            response = redirect('schedule-calendar-view', id=id)
             week += int(query['week'])
+            response.set_cookie('week', week)
             if week < 0:
-                week = 0
-        hours = appointments_dict(id, week)
-    context = {'doctor': doctor, 'hours': hours, 'week': week}
-    return render(request, 'doctors/htmx-schedule-calendar.html', context)
+                response.set_cookie('week', 0)
+            return response
+    return response
