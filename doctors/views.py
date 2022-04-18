@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import DoctorEditForm, DateForm, AppointmentForm
+from .forms import DoctorEditForm, AppointmentForm
 from .models import Doctor
 from accounts.models import Profile
 from .filters import DoctorFilter

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from doctors_app.settings import LANGUAGE_CODE
 from .models import Doctor
 from appointments.models import Appointment
 
@@ -29,24 +28,6 @@ def appointments_dict(id, week):
         else:
             dictionary[date] += [[hour, status, patient, app_id]]
     return dictionary
-
-def week_list():
-    current_time = datetime.now()
-    week_list = []
-    for n in range(7):
-        time = current_time + timedelta(days=n)
-        # time_string += str(time.date())
-        formated_time = time.strftime('%A, %x')
-        if LANGUAGE_CODE == 'bg':
-            formated_time = formated_time.replace('Monday', 'Понеделник')
-            formated_time = formated_time.replace('Tuesday', 'Вторник')
-            formated_time = formated_time.replace('Wednesday', 'Сряда')
-            formated_time = formated_time.replace('Thursday', 'Четвъртък')
-            formated_time = formated_time.replace('Friday', 'Петък')
-            formated_time = formated_time.replace('Saturday', 'Събота')
-            formated_time = formated_time.replace('Sunday', 'Неделя')
-        week_list.append(formated_time)
-    return week_list
 
 def date_time_object(string):
     #2022-04-04 13:00:00
