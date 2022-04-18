@@ -23,10 +23,11 @@ def appointments_dict(id, week):
         hour = time_object[1]
         status = app.status
         patient = app.user_id
+        app_id = app.id
         if date not in dictionary:
-            dictionary[date] = [[hour, status, patient]]
+            dictionary[date] = [[hour, status, patient, app_id]]
         else:
-            dictionary[date] += [[hour, status, patient]]
+            dictionary[date] += [[hour, status, patient, app_id]]
     return dictionary
 
 def week_list():

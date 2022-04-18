@@ -1,0 +1,22 @@
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;">
+</div>
+<div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header bg-primary">
+		  <h5 class="text-dark"><b>{{ appointment.hour }}</b></h5>
+		</div>
+		<div class="modal-body"
+		  <p>Има записан пациент за този час: <b>
+      <div class="pt-3" align="left">
+        <p><b>Име:</b> {{ patient.first_name }} {{ patient.last_name }}</p>
+        <p><b>Причина:</b> {{ appointment.reason }}</p>
+        <p><b>Тел.:</b> {{ appointment.пхоне }}</p>
+      </div>
+		</div>
+    <div class="modal-footer pt-3" align="right">
+      <button type="button" class="btn btn-danger" onclick="closeModal()">Затвори</button>
+    </div>
+	  </div>
+	</div>
+</div>

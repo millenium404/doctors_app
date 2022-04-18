@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import DoctorEditForm, DateForm, AppointmentForm
 from .models import Doctor
+from accounts.models import Profile
 from .filters import DoctorFilter
 from django.http import Http404, HttpResponse
 from datetime import datetime, timedelta
@@ -130,3 +131,9 @@ def schedule_calendar_htmx(request, id=None):
                 response.set_cookie('week', 0)
             return response
     return response
+
+def get_patient_htmx(request, id):
+    appointment = Appointment.objects.get(id=id)
+    patient = Profile.objects.get(id=appointment.user_id)
+    context = {'appointment': appointment, 'patient': patient}
+    return render(request, 'doctors/patient-info.html', context)

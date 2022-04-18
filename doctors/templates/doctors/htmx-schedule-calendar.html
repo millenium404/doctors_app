@@ -19,7 +19,12 @@
       {% for hour in hours %}
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="{{ date }}-{{ hour }}" name="key {{ date }}-{{ hour }}" {% if hour.1 == 'available' %}checked{% endif %}>
-          <label class="form-check-label {% if hour.1 == 'available' %}text-secondary{% endif %} {% if hour.2 != 0 %}text-danger{% endif %}" for="inlineCheckbox1">{{ hour.0 }}</label>
+          <label class="form-check-label" for="inlineCheckbox1"><button
+          	hx-get="{% url 'get-patient' hour.3 %}"
+          	hx-target="#modals-here"
+          	hx-trigger="click"
+          	class="{% if hour.2 != 0 %}btn btn-outline-danger{% elif hour.1 == 'not_available' %}btn btn-outline-dark{% else %}btn btn-outline-secondary{% endif %}  btn-sm"
+          	_="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop">{{ hour.0 }}</button></label>
         </div>
       {% endfor %}
     </div>
@@ -38,3 +43,4 @@
     </div>
   {% endfor %}
 {% endif %}
+<div id="modals-here"></div>

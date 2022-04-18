@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+  function closeModal() {
+    	var container = document.getElementById("modals-here")
+    	var backdrop = document.getElementById("modal-backdrop")
+    	var modal = document.getElementById("modal")
+
+    	modal.classList.remove("show")
+    	backdrop.classList.remove("show")
+
+    	setTimeout(function() {
+    		container.removeChild(backdrop)
+    		container.removeChild(modal)
+    	}, 200)
+  }
+</script>
 <br/>
 <h5><b>Седмичен график: <p class="text-secondary">{{doctor.practice_name}}</p></b></h5>
 <p class="text-secondary">Отбележете часовете в семицата, в които можете да приемате пациенти. За маркираните в червено часове има записани пациенти.</p>
